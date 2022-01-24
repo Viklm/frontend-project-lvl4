@@ -4,6 +4,7 @@
   "description": "frontend_l4_chat_project",
   "main": "server/index.js",
   "type": "module",
+  
   "engines": {
     "node": "16.x"
   },
