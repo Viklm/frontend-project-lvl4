@@ -6,6 +6,7 @@ import { actions as messagesActions } from '../slices/messagesSlice.js';
 import useAuth from '../hooks/useAuth.jsx';
 import socket from '../socket.js';
 
+// не работает свойство rounded-2
 const Message = () => {
   const messageRef = useRef();
   const { user } = useAuth();

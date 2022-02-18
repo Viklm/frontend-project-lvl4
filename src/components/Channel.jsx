@@ -1,5 +1,9 @@
 import React from 'react';
-import { Nav } from 'react-bootstrap';
+import {
+  Nav,
+  ButtonGroup,
+  Dropdown,
+} from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 import { actions as currentChannelActions } from '../slices/currentChannelSlice.js';
@@ -7,7 +11,6 @@ import { actions as currentChannelActions } from '../slices/currentChannelSlice.
 const Channel = () => {
   const { channels } = useSelector((state) => state.channelsReducer);
   const { currentChannel } = useSelector((state) => state.currentChannelReducer);
-  console.log(currentChannel, 'nen');
   const dispatch = useDispatch();
   // padding-left: 1.5rem; padding-right: 0.5rem; не работают (ps-4, pe-2) на строке 10
   return (
@@ -28,12 +31,36 @@ const Channel = () => {
             'btn-secondary': channel.id === currentChannel,
           });
 
+          if (!channel.removable) {
+            return (
+              <Nav.Item as="li" className="w-100" key={channel.id}>
+                <button onClick={() => dispatch(currentChannelActions.setCurrentChannel(channel.id))} type="button" className={btnClasses}>
+                  <span className="me-1">#</span>
+                  {channel.name}
+                </button>
+              </Nav.Item>
+            );
+          }
+
           return (
             <Nav.Item as="li" className="w-100" key={channel.id}>
-              <button onClick={() => dispatch(currentChannelActions.setCurrentChannel(channel.id))} type="button" className={btnClasses}>
-                <span className="me-1">#</span>
-                {channel.name}
-              </button>
+              <Dropdown className="d-flex" as={ButtonGroup}>
+                <button onClick={() => dispatch(currentChannelActions.setCurrentChannel(channel.id))} type="button" className={btnClasses}>
+                  <span className="me-1">#</span>
+                  {channel.name}
+                </button>
+
+                <Dropdown.Toggle split variant={channel.id === currentChannel ? 'secondary' : ''} />
+
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => console.log('Переименовать')}>
+                    Переименовать
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => console.log('Удалить')}>
+                    Удалить
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </Nav.Item>
           );
         })}

@@ -55,7 +55,7 @@ const LoginForm = () => {
             {(props) => (
               <Form onSubmit={props.handleSubmit}>
                 <Form.FloatingLabel className="mb-3" controlId="username" label="Ваш ник">
-                  {/* <Form.Label>Ваш ник</Form.Label> */}
+                  {/* <Form.Label>Ваш ник</Form.Label> не работает label... */}
                   <Form.Control
                     name="username"
                     type="text"
