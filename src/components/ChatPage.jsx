@@ -5,10 +5,10 @@ import {
   Row,
   Col,
 } from 'react-bootstrap';
-import { io } from 'socket.io-client';
 import { useDispatch, batch } from 'react-redux';
 import { actions as channelsActions } from '../slices/channelsSlice.js';
 import { actions as messagesActions } from '../slices/messagesSlice.js';
+import { actions as currentChannelActions } from '../slices/currentChannelSlice.js';
 import routes from '../routes.js';
 import Channel from './Channel.jsx';
 import Message from './Message.jsx';
@@ -24,17 +24,16 @@ const getAuthorization = (user) => {
 
 const ChatPage = () => {
   const dispatch = useDispatch();
-  const socket = io();
   const { user } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(routes.dataPath(), { headers: getAuthorization(user) });
-        console.log(data, 'chat info loaded');
         batch(() => {
           dispatch(channelsActions.setChannels(data.channels));
           dispatch(messagesActions.setMessages(data.messages));
+          dispatch(currentChannelActions.setCurrentChannel(data.currentChannelId));
         });
       } catch (error) {
         console.error(error);
@@ -44,15 +43,6 @@ const ChatPage = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const listenerMessage = (message) => {
-      dispatch(messagesActions.addMessages(message));
-      console.log(message, 'sending');
-    };
-    socket.on('newMessage', listenerMessage);
-    return () => socket.off('newMessage', listenerMessage);
-  }, []);
-
   return (
     <Container className="h-100 my-4 overflow-hidden rounded shadow">
       <Row className="h-100 bg-white">
@@ -60,7 +50,7 @@ const ChatPage = () => {
           <Channel />
         </Col>
         <Col className="h-100 p-0">
-          <Message socket={socket} />
+          <Message />
         </Col>
       </Row>
     </Container>

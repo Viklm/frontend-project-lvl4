@@ -1,16 +1,30 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Form, InputGroup } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Formik } from 'formik';
-import { io } from 'socket.io-client';
+import { actions as messagesActions } from '../slices/messagesSlice.js';
 import useAuth from '../hooks/useAuth.jsx';
+import socket from '../socket.js';
 
 const Message = () => {
   const messageRef = useRef();
   const { user } = useAuth();
-  const socket = io();
-  const { messages } = useSelector((state) => state.messagesReducer);
-  console.log(messages, 'message load');
+  const { currentChannel } = useSelector((state) => state.currentChannelReducer);
+  const messages = useSelector((state) => {
+    const allMessages = state.messagesReducer.messages;
+    // console.log(allMessages, 'current');
+    const currentMessages = allMessages.filter(({ channelId }) => channelId === currentChannel);
+    return currentMessages;
+  });
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const listenerMessage = (message) => {
+      dispatch(messagesActions.addMessages(message));
+    };
+    socket.on('newMessage', listenerMessage);
+    return () => socket.off('newMessage', listenerMessage);
+  }, []);
 
   return (
     <>
@@ -41,14 +55,13 @@ const Message = () => {
             onSubmit={(values, actions) => {
               const message = {
                 body: values.body,
-                // channelId: currentChannelId,
+                channelId: currentChannel,
                 username: user.username,
               };
               socket.emit('newMessage', message, () => {
                 actions.resetForm();
                 messageRef.current.focus();
               });
-              console.log(message, 'message send');
             }}
           >
             {(props) => (

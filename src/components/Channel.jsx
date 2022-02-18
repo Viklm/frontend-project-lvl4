@@ -1,10 +1,15 @@
 import React from 'react';
 import { Nav } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import cn from 'classnames';
+import { actions as currentChannelActions } from '../slices/currentChannelSlice.js';
 
 const Channel = () => {
   const { channels } = useSelector((state) => state.channelsReducer);
-
+  const { currentChannel } = useSelector((state) => state.currentChannelReducer);
+  console.log(currentChannel, 'nen');
+  const dispatch = useDispatch();
+  // padding-left: 1.5rem; padding-right: 0.5rem; не работают (ps-4, pe-2) на строке 10
   return (
     <>
       <div className="d-flex justify-content-between mb-2 ps-4 pe-2">
@@ -17,14 +22,21 @@ const Channel = () => {
         </button>
       </div>
       <Nav as="ul" className="flex-column px-2" variant="pills" fill>
-        {channels.length > 0 && channels.map((channel) => (
-          <Nav.Item as="li" className="w-100" key={channel.id}>
-            <button type="button" className="w-100 rounded-0 text-start btn">
-              <span className="me-1">#</span>
-              {channel.name}
-            </button>
-          </Nav.Item>
-        ))}
+        {channels.length > 0 && channels.map((channel) => {
+          const btnClasses = cn({
+            'w-100 rounded-0 text-start btn': true,
+            'btn-secondary': channel.id === currentChannel,
+          });
+
+          return (
+            <Nav.Item as="li" className="w-100" key={channel.id}>
+              <button onClick={() => dispatch(currentChannelActions.setCurrentChannel(channel.id))} type="button" className={btnClasses}>
+                <span className="me-1">#</span>
+                {channel.name}
+              </button>
+            </Nav.Item>
+          );
+        })}
       </Nav>
     </>
   );
