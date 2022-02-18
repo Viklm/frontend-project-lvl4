@@ -1,5 +1,3 @@
-// @ts-check
-
 import _ from 'lodash';
 import HttpErrors from 'http-errors';
 
@@ -19,6 +17,7 @@ const buildState = (defaultState) => {
     currentChannelId: generalChannelId,
     users: [
       { id: 1, username: 'admin', password: 'admin' },
+      { id: 2, username: 'user', password: 'user' },
     ],
   };
 
