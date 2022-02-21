@@ -14,12 +14,13 @@ import { useLocation, useNavigate, Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth.jsx';
 import routes from '../routes.js';
 
-const LoginSchema = yup.object().shape({
-  username: yup.string().required('Заполните поле'),
-  password: yup.string().required('Заполните поле'),
+const SignSchema = yup.object().shape({
+  username: yup.string().required('Заполните поле').min(3, 'от 3 до 20 символов').max(20, 'от 3 до 20 символов'),
+  password: yup.string().required('Заполните поле').min(6, 'минимально 6 символов'),
+  confirmPassword: yup.string().required('Заполните поле').oneOf([yup.ref('password')], 'Пароли не совпадают'),
 });
 
-const LoginForm = () => {
+const SignupPage = () => {
   // const { t } = useTranslation();
   const { logIn } = useAuth();
   const location = useLocation();
@@ -37,30 +38,31 @@ const LoginForm = () => {
       <Container>
         <Row className="justify-content-center">
           <Col className="col-12">
-            <h1 className="text-center my-4">Войти</h1>
+            <h1 className="text-center my-4">Регистрация</h1>
           </Col>
           <Col className="col-xl-4 col-lg-5 col-md-6 col-sm-8">
             <Formik
               initialValues={{
                 username: '',
                 password: '',
+                confirmPassword: '',
               }}
-              validationSchema={LoginSchema}
               initialStatus={{}}
+              validationSchema={SignSchema}
               onSubmit={async (values, actions) => {
                 try {
-                  const res = await axios.post(routes.loginPath(), values);
+                  const res = await axios.post(routes.signupPath(), values);
                   logIn(res.data);
                   navigate(from, { replace: true });
                 } catch (error) {
-                  if (error.isAxiosError && error.response.status === 401) {
-                    actions.setStatus({ authFailed: 'Неверные имя пользователя или пароль' });
+                  if (error.isAxiosError && error.response.status === 409) {
+                    actions.setStatus({ signupFailed: 'Такой пользователь уже существует' });
                   }
                 }
               }}
             >
               {(props) => (
-                <Form onSubmit={props.handleSubmit}>
+                <Form onSubmit={props.handleSubmit} autoComplete="off">
                   <Form.FloatingLabel className="mb-3" controlId="username" label="Ваш ник">
                     <Form.Control
                       name="username"
@@ -69,7 +71,7 @@ const LoginForm = () => {
                       disabled={props.isSubmitting}
                       onChange={props.handleChange}
                       value={props.values.username}
-                      isInvalid={props.status.authFailed || props.errors.username}
+                      isInvalid={props.status.signupFailed || props.errors.username}
                       autoComplete="username"
                     />
                     {props.errors.username && <Form.Control.Feedback type="invalid">{props.errors.username}</Form.Control.Feedback>}
@@ -82,22 +84,29 @@ const LoginForm = () => {
                       disabled={props.isSubmitting}
                       onChange={props.handleChange}
                       value={props.values.password}
-                      isInvalid={props.status.authFailed || props.errors.password}
+                      isInvalid={props.status.signupFailed || props.errors.password}
                       autoComplete="current-password"
                     />
                     {props.errors.password && <Form.Control.Feedback type="invalid">{props.errors.password}</Form.Control.Feedback>}
-                    {props.status.authFailed && <Form.Control.Feedback type="invalid">{props.status.authFailed}</Form.Control.Feedback>}
                   </Form.FloatingLabel>
-                  <button type="submit" disabled={props.isSubmitting} className="w-100 mb-3 btn btn-outline-primary">Войти</button>
+                  <Form.FloatingLabel className="mb-4" controlId="confirmPassword" label="Подтвердите пароль">
+                    <Form.Control
+                      name="confirmPassword"
+                      type="password"
+                      placeholder="Подтвердите пароль"
+                      disabled={props.isSubmitting}
+                      onChange={props.handleChange}
+                      value={props.values.confirmPassword}
+                      isInvalid={props.status.signupFailed || props.errors.confirmPassword}
+                      autoComplete="current-password"
+                    />
+                    {props.errors.confirmPassword && <Form.Control.Feedback type="invalid">{props.errors.confirmPassword}</Form.Control.Feedback>}
+                    {props.status.signupFailed && <Form.Control.Feedback type="invalid">{props.status.signupFailed}</Form.Control.Feedback>}
+                  </Form.FloatingLabel>
+                  <button type="submit" disabled={props.isSubmitting} className="w-100 mb-3 btn btn-outline-primary">Зарегистрироваться</button>
                 </Form>
               )}
             </Formik>
-            <Container className="p-4">
-              <p className="text-center">
-                <span>Нет аккаунта?</span>
-                <a href="/signup">Регистрация</a>
-              </p>
-            </Container>
           </Col>
         </Row>
       </Container>
@@ -105,4 +114,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default SignupPage;

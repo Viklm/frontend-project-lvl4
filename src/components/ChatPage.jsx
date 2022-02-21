@@ -4,7 +4,9 @@ import {
   Container,
   Row,
   Col,
+  Navbar,
 } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { useDispatch, batch, useSelector } from 'react-redux';
 import { actions as channelsActions } from '../slices/channelsSlice.js';
 import { actions as messagesActions } from '../slices/messagesSlice.js';
@@ -35,7 +37,7 @@ const renderModal = (modal) => {
 
 const ChatPage = () => {
   const dispatch = useDispatch();
-  const { user } = useAuth();
+  const { user, logOut } = useAuth();
   const { modal } = useSelector((state) => state.modalReducer);
 
   useEffect(() => {
@@ -57,6 +59,12 @@ const ChatPage = () => {
 
   return (
     <>
+      <Navbar className="shadow-sm" expand="lg" bg="white" variant="light">
+        <Container>
+          <Link to="/" className="navbar-brand">Hexlet Chat</Link>
+          <button onClick={logOut} type="button" className="btn btn-primary">Выйти</button>
+        </Container>
+      </Navbar>
       <Container className="h-100 my-4 overflow-hidden rounded shadow">
         <Row className="h-100 bg-white">
           <Col className="border-end pt-5 px-0 bg-light" xs={4} md={2}>
