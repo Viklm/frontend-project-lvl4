@@ -5,7 +5,7 @@ import {
   Row,
   Col,
 } from 'react-bootstrap';
-import { useDispatch, batch } from 'react-redux';
+import { useDispatch, batch, useSelector } from 'react-redux';
 import { actions as channelsActions } from '../slices/channelsSlice.js';
 import { actions as messagesActions } from '../slices/messagesSlice.js';
 import { actions as currentChannelActions } from '../slices/currentChannelSlice.js';
@@ -13,6 +13,7 @@ import routes from '../routes.js';
 import Channel from './Channel.jsx';
 import Message from './Message.jsx';
 import useAuth from '../hooks/useAuth.jsx';
+import getModal from './modal/index.js';
 
 const getAuthorization = (user) => {
   if (user && user.token) {
@@ -22,9 +23,20 @@ const getAuthorization = (user) => {
   return {};
 };
 
+const renderModal = (modal) => {
+  console.log(modal, 'modal');
+  if (!modal.type) {
+    return null;
+  }
+
+  const Modal = getModal(modal.type);
+  return <Modal />;
+};
+
 const ChatPage = () => {
   const dispatch = useDispatch();
   const { user } = useAuth();
+  const { modal } = useSelector((state) => state.modalReducer);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,16 +56,19 @@ const ChatPage = () => {
   }, []);
 
   return (
-    <Container className="h-100 my-4 overflow-hidden rounded shadow">
-      <Row className="h-100 bg-white">
-        <Col className="border-end pt-5 px-0 bg-light" xs={4} md={2}>
-          <Channel />
-        </Col>
-        <Col className="h-100 p-0">
-          <Message />
-        </Col>
-      </Row>
-    </Container>
+    <>
+      <Container className="h-100 my-4 overflow-hidden rounded shadow">
+        <Row className="h-100 bg-white">
+          <Col className="border-end pt-5 px-0 bg-light" xs={4} md={2}>
+            <Channel />
+          </Col>
+          <Col className="h-100 p-0">
+            <Message />
+          </Col>
+        </Row>
+      </Container>
+      {renderModal(modal)}
+    </>
   );
 };
 

@@ -7,15 +7,15 @@ import {
   Row,
   Col,
 } from 'react-bootstrap';
-import * as Yup from 'yup';
+import * as yup from 'yup';
 import { useLocation, useNavigate } from 'react-router-dom';
 // import { useTranslation } from 'react-i18next';
 import useAuth from '../hooks/useAuth.jsx';
 import routes from '../routes.js';
 
-const LoginSchema = Yup.object().shape({
-  username: Yup.string().required('Заполните поле'),
-  password: Yup.string().required('Заполните поле'),
+const LoginSchema = yup.object().shape({
+  username: yup.string().required('Заполните поле'),
+  password: yup.string().required('Заполните поле'),
 });
 
 const LoginForm = () => {
