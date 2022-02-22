@@ -1,11 +1,12 @@
 // @ts-check
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'core-js/stable/index.js';
-import 'regenerator-runtime/runtime.js';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import 'core-js/stable/index.js';
+import 'regenerator-runtime/runtime.js';
 import '../assets/application.scss';
+import './i18n.js';
 import App from './App.jsx';
 import store from './slices/index.js';
 

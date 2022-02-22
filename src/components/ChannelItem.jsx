@@ -1,15 +1,17 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Nav,
   ButtonGroup,
   Dropdown,
 } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
 import { actions as currentChannelActions } from '../slices/currentChannelSlice.js';
 import { actions as modalSlice } from '../slices/modalSlice.js';
 
 const ChannelItem = ({ id, name, removable }) => {
+  const { t } = useTranslation();
   const { currentChannel } = useSelector((state) => state.currentChannelReducer);
   const dispatch = useDispatch();
   const btnClasses = cn({
@@ -48,10 +50,10 @@ const ChannelItem = ({ id, name, removable }) => {
 
         <Dropdown.Menu>
           <Dropdown.Item onClick={handleRename}>
-            Переименовать
+            {t('ChannelItem.dropdownRename')}
           </Dropdown.Item>
           <Dropdown.Item onClick={handleRemove}>
-            Удалить
+            {t('ChannelItem.dropdownRemove')}
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>

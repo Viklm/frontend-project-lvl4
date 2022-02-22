@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
+import { useDispatch, batch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import {
   Container,
   Row,
@@ -7,10 +9,10 @@ import {
   Navbar,
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { useDispatch, batch, useSelector } from 'react-redux';
 import { actions as channelsActions } from '../slices/channelsSlice.js';
 import { actions as messagesActions } from '../slices/messagesSlice.js';
 import { actions as currentChannelActions } from '../slices/currentChannelSlice.js';
+
 import routes from '../routes.js';
 import Channel from './Channel.jsx';
 import Message from './Message.jsx';
@@ -36,6 +38,7 @@ const renderModal = (modal) => {
 };
 
 const ChatPage = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { user, logOut } = useAuth();
   const { modal } = useSelector((state) => state.modalReducer);
@@ -61,8 +64,8 @@ const ChatPage = () => {
     <>
       <Navbar className="shadow-sm" expand="lg" bg="white" variant="light">
         <Container>
-          <Link to="/" className="navbar-brand">Hexlet Chat</Link>
-          <button onClick={logOut} type="button" className="btn btn-primary">Выйти</button>
+          <Link to="/" className="navbar-brand">{t('logo')}</Link>
+          <button onClick={logOut} type="button" className="btn btn-primary">{t('logOutBtn')}</button>
         </Container>
       </Navbar>
       <Container className="h-100 my-4 overflow-hidden rounded shadow">

@@ -1,13 +1,15 @@
 import React, { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { Modal, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
-import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 import { actions as modalSlice } from '../../slices/modalSlice.js';
-import socket from '../../socket.js';
 import { actions as currentChannelActions } from '../../slices/currentChannelSlice.js';
+import socket from '../../socket.js';
 
 const NewChannel = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const handleClose = () => dispatch(modalSlice.setHiddenModal());
 
@@ -24,7 +26,7 @@ const NewChannel = () => {
       name: '',
     },
     validationSchema: yup.object({
-      name: yup.string().required('Заполните поле').notOneOf(namesOfChannels, 'Такое имя уже занято'),
+      name: yup.string().required(t('yup.required')).notOneOf(namesOfChannels, t('yup.notOneOf')),
     }),
     validateOnChange: false,
     validateOnBlur: false,
@@ -42,7 +44,7 @@ const NewChannel = () => {
     <Modal centered show>
       <Modal.Header closeButton onHide={handleClose}>
         <Modal.Title>
-          Добавить канал
+          {t('Modal.newChannelTitle')}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -62,10 +64,10 @@ const NewChannel = () => {
           </Form.Group>
           <div className="d-flex justify-content-end">
             <button onClick={handleClose} type="button" className="me-2 btn btn-secondary">
-              Отменить
+              {t('Modal.cancelBtn')}
             </button>
             <button type="submit" className="btn btn-primary">
-              Отправить
+              {t('Modal.button')}
             </button>
           </div>
         </Form>

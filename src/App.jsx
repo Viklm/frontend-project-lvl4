@@ -5,7 +5,6 @@ import {
   Navigate,
   useLocation,
 } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { AuthProvider } from './contexts/authContexts.jsx';
 import LoginPage from './components/LoginPage.jsx';
 import ErorrPage from './components/ErorrPage.jsx';
@@ -21,28 +20,24 @@ const RequireAuth = ({ children }) => {
   );
 };
 
-const App = () => {
-  const { t } = useTranslation();
-
-  return (
-    <AuthProvider>
-      <div className="d-flex flex-column h-100">
-        <Routes>
-          <Route
-            path="/"
-            element={(
-              <RequireAuth>
-                <ChatPage />
-              </RequireAuth>
-            )}
-          />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="*" element={<ErorrPage />} />
-        </Routes>
-      </div>
-    </AuthProvider>
-  );
-};
+const App = () => (
+  <AuthProvider>
+    <div className="d-flex flex-column h-100">
+      <Routes>
+        <Route
+          path="/"
+          element={(
+            <RequireAuth>
+              <ChatPage />
+            </RequireAuth>
+          )}
+        />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="*" element={<ErorrPage />} />
+      </Routes>
+    </div>
+  </AuthProvider>
+);
 
 export default App;

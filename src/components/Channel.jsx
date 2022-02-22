@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { Nav } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
+import { Nav } from 'react-bootstrap';
 import { actions as modalSlice } from '../slices/modalSlice.js';
-import ChannelItem from './ChannelItem.jsx';
 import { actions as channelsActions } from '../slices/channelsSlice.js';
 import { actions as currentChannelActions } from '../slices/currentChannelSlice.js';
+import ChannelItem from './ChannelItem.jsx';
 import socket from '../socket.js';
 
 const Channel = () => {

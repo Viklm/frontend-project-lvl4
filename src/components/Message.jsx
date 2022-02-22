@@ -1,12 +1,14 @@
 import React, { useRef, useEffect } from 'react';
-import { Form, InputGroup } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { Form, InputGroup } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { actions as messagesActions } from '../slices/messagesSlice.js';
 import useAuth from '../hooks/useAuth.jsx';
 import socket from '../socket.js';
 
 const Message = () => {
+  const { t } = useTranslation();
   const messageRef = useRef();
   const { user } = useAuth();
   const { currentChannel } = useSelector((state) => state.currentChannelReducer);
@@ -56,8 +58,7 @@ const Message = () => {
             <b>{`# ${getCurrentChannelName}`}</b>
           </p>
           <span className="text-muted">
-            {messages.length}
-            {' сообщений'}
+            {t('messages.messagesCount', { count: messages.length })}
           </span>
         </div>
         <div id="message-box" className="chat-messages overflow-auto px-5">
