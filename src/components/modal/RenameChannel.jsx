@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Modal, Form } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { actions as modalSlice } from '../../slices/modalSlice.js';
@@ -11,6 +12,8 @@ const RenameChannel = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const handleClose = () => dispatch(modalSlice.setHiddenModal());
+
+  const notify = () => toast.success(t('success.renameChannel'));
 
   const { modal: { item } } = useSelector((state) => state.modalReducer);
 
@@ -40,6 +43,7 @@ const RenameChannel = () => {
       socket.emit('renameChannel', data, (res) => {
         if (res.status === 'ok') {
           dispatch(modalSlice.setHiddenModal());
+          notify();
         }
       });
     },

@@ -3,6 +3,7 @@ import axios from 'axios';
 import * as yup from 'yup';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { Formik } from 'formik';
 import {
   Form,
@@ -19,6 +20,8 @@ const LoginForm = () => {
   const { logIn } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+
+  const notify = () => toast.error(t('errors.network'));
 
   const LoginSchema = yup.object().shape({
     username: yup.string().required(t('yup.required')),
@@ -53,7 +56,8 @@ const LoginForm = () => {
                   logIn(res.data);
                   navigate(from, { replace: true });
                 } catch (error) {
-                  if (error.isAxiosError && error.response.status === 401) {
+                  if (error.isAxiosError || error.response.status === 401) {
+                    notify();
                     actions.setStatus({ authFailed: t('errors.authFailed') });
                   }
                 }

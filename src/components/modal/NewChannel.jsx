@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Modal, Form } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { actions as modalSlice } from '../../slices/modalSlice.js';
@@ -12,6 +13,8 @@ const NewChannel = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const handleClose = () => dispatch(modalSlice.setHiddenModal());
+
+  const notify = () => toast.success(t('success.newChannel'));
 
   const namesOfChannels = useSelector((state) => state.channelsReducer.channels
     .map(({ name }) => name));
@@ -35,6 +38,7 @@ const NewChannel = () => {
         if (res.status === 'ok') {
           dispatch(currentChannelActions.setCurrentChannel(res.data.id));
           dispatch(modalSlice.setHiddenModal());
+          notify();
         }
       });
     },

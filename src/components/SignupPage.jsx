@@ -11,6 +11,7 @@ import {
 } from 'react-bootstrap';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import useAuth from '../hooks/useAuth.jsx';
 import routes from '../routes.js';
 
@@ -26,6 +27,7 @@ const SignupPage = () => {
     confirmPassword: yup.string().required(t('yup.required')).oneOf([yup.ref('password')], t('yup.confirmPassword')),
   });
 
+  const notify = () => toast.error(t('errors.network'));
   const from = location.state?.from?.pathname || '/';
 
   return (
@@ -57,6 +59,7 @@ const SignupPage = () => {
                 } catch (error) {
                   if (error.isAxiosError && error.response.status === 409) {
                     actions.setStatus({ signupFailed: t('errors.signupFailed') });
+                    notify();
                   }
                 }
               }}

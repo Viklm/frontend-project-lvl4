@@ -7,6 +7,7 @@ import 'core-js/stable/index.js';
 import 'regenerator-runtime/runtime.js';
 import '../assets/application.scss';
 import './i18n.js';
+import { AuthProvider } from './contexts/authContexts.jsx';
 import App from './App.jsx';
 import store from './slices/index.js';
 
@@ -17,7 +18,9 @@ if (process.env.NODE_ENV !== 'production') {
 ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </Provider>
   </BrowserRouter>,
   document.getElementById('chat'),

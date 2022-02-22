@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { Modal } from 'react-bootstrap';
 import { actions as modalSlice } from '../../slices/modalSlice.js';
 import socket from '../../socket.js';
@@ -9,11 +10,14 @@ const RemoveChannel = () => {
   const { t } = useTranslation();
   const { modal } = useSelector((state) => state.modalReducer);
   const dispatch = useDispatch();
+
+  const notify = () => toast.success(t('success.removeChannel'));
   const handleClose = () => dispatch(modalSlice.setHiddenModal());
   const handleRemove = () => {
     socket.emit('removeChannel', modal.item, (res) => {
       if (res.status === 'ok') {
         handleClose();
+        notify();
       }
     });
   };

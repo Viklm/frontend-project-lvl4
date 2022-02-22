@@ -5,7 +5,8 @@ import {
   Navigate,
   useLocation,
 } from 'react-router-dom';
-import { AuthProvider } from './contexts/authContexts.jsx';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/scss/main.scss';
 import LoginPage from './components/LoginPage.jsx';
 import ErorrPage from './components/ErorrPage.jsx';
 import ChatPage from './components/ChatPage.jsx';
@@ -21,7 +22,7 @@ const RequireAuth = ({ children }) => {
 };
 
 const App = () => (
-  <AuthProvider>
+  <>
     <div className="d-flex flex-column h-100">
       <Routes>
         <Route
@@ -37,7 +38,8 @@ const App = () => (
         <Route path="*" element={<ErorrPage />} />
       </Routes>
     </div>
-  </AuthProvider>
+    <ToastContainer />
+  </>
 );
 
 export default App;

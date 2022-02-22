@@ -24,6 +24,12 @@ export default {
     errors: {
       authFailed: 'Неверные имя пользователя или пароль',
       signupFailed: 'Такой пользователь уже существует',
+      network: 'Ошибка сети',
+    },
+    success: {
+      newChannel: 'Канал успешно создан',
+      removeChannel: 'Канал успешно удалён',
+      renameChannel: 'Канал успешно переименован',
     },
     messages: {
       messagesCount_one: '{{count}} сообщение',
@@ -55,23 +61,6 @@ export default {
     ErrorPage: {
       title: 'Страница не найдена',
       homeLink: 'Вернуться',
-    },
-    feedback: {
-      errors: {
-        required: 'Обязательное поле',
-        min: 'Не менее {{count}} символов',
-        minMax: 'От {{min}} до {{max}} символов',
-        confirmPassword: 'Пароли должны совпадать',
-        userAlreadyExists: 'Такой пользователь уже существует',
-        invalidAuthData: 'Неверные имя пользователя или пароль',
-        mustBeUnique: 'Должно быть уникальным',
-        networkProblem: 'Ошибка соединения',
-      },
-      success: {
-        addChannel: 'Канал добавлен',
-        removeChannel: 'Канал удалён',
-        renameChannel: 'Канал переименован',
-      },
     },
   },
 };
