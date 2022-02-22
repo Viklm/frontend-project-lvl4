@@ -3,11 +3,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Form, InputGroup } from 'react-bootstrap';
 import { useFormik } from 'formik';
+import filter from 'leo-profanity';
 import { actions as messagesActions } from '../slices/messagesSlice.js';
 import useAuth from '../hooks/useAuth.jsx';
 import socket from '../socket.js';
 
 const Message = () => {
+  filter.loadDictionary('ru');
   const { t } = useTranslation();
   const messageRef = useRef();
   const { user } = useAuth();
@@ -32,7 +34,7 @@ const Message = () => {
     },
     onSubmit: (values, actions) => {
       const message = {
-        body: values.body,
+        body: filter.clean(values.body),
         channelId: currentChannel,
         username: user.username,
       };
