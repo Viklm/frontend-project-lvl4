@@ -7,7 +7,7 @@ export default {
     LoginPage: {
       title: 'Войти',
       form: {
-        username: 'Имя пользователя',
+        username: 'Ваш ник',
         password: 'Пароль',
         button: 'Войти',
       },
@@ -39,7 +39,7 @@ export default {
     SignupPage: {
       registration: 'Регистрация',
       form: {
-        username: 'Ваш ник',
+        username: 'Имя пользователя',
         password: 'Пароль',
         button: 'Зарегистрироваться',
         confirmPassword: 'Подтвердите пароль',
