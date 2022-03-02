@@ -27,9 +27,9 @@ export default {
       network: 'Ошибка сети',
     },
     success: {
-      newChannel: 'Канал успешно создан',
-      removeChannel: 'Канал успешно удалён',
-      renameChannel: 'Канал успешно переименован',
+      newChannel: 'Канал создан',
+      removeChannel: 'Канал удалён',
+      renameChannel: 'Канал переименован',
     },
     messages: {
       messagesCount_one: '{{count}} сообщение',
