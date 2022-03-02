@@ -99,7 +99,7 @@ const LoginForm = () => {
             <Container className="p-4">
               <p className="text-center">
                 <span>{t('LoginPage.noAccount')}</span>
-                <a href="/signup">{t('LoginPage.registration')}</a>
+                <Link to="/signup">{t('LoginPage.registration')}</Link>
               </p>
             </Container>
           </Col>

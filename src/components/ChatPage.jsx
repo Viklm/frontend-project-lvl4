@@ -28,7 +28,6 @@ const getAuthorization = (user) => {
 };
 
 const renderModal = (modal) => {
-  console.log(modal, 'modal');
   if (!modal.type) {
     return null;
   }
@@ -53,7 +52,7 @@ const ChatPage = () => {
           dispatch(currentChannelActions.setCurrentChannel(data.currentChannelId));
         });
       } catch (error) {
-        console.error(error);
+        console.error(error, '1');
       }
     };
 
