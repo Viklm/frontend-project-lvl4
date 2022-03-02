@@ -46,8 +46,9 @@ const ChannelItem = ({ id, name, removable }) => {
           {name}
         </button>
 
-        <Dropdown.Toggle split variant={id === currentChannel ? 'secondary' : ''} />
+        <Dropdown.Toggle split variant={id === currentChannel ? 'secondary' : ''}>
           <span class="visually-hidden">{t('ChannelItem.dropdownName')}</span>
+        </Dropdown.Toggle>
         <Dropdown.Menu>
           <Dropdown.Item onClick={handleRename}>
             {t('ChannelItem.dropdownRename')}
