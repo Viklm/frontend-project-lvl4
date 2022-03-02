@@ -4,12 +4,13 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { Modal } from 'react-bootstrap';
 import { actions as modalSlice } from '../../slices/modalSlice.js';
-import socket from '../../socket.js';
+import useSocket from '../../hooks/useSocket.jsx';
 
 const RemoveChannel = () => {
   const { t } = useTranslation();
   const { modal } = useSelector((state) => state.modalReducer);
   const dispatch = useDispatch();
+  const socket = useSocket();
 
   const notify = () => toast.success(t('success.removeChannel'));
   const handleClose = () => dispatch(modalSlice.setHiddenModal());

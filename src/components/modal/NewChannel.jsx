@@ -7,11 +7,12 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { actions as modalSlice } from '../../slices/modalSlice.js';
 import { actions as currentChannelActions } from '../../slices/currentChannelSlice.js';
-import socket from '../../socket.js';
+import useSocket from '../../hooks/useSocket.jsx';
 
 const NewChannel = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const socket = useSocket();
   const handleClose = () => dispatch(modalSlice.setHiddenModal());
 
   const notify = () => toast.success(t('success.newChannel'));

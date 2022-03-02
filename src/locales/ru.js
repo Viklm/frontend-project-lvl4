@@ -7,7 +7,7 @@ export default {
     LoginPage: {
       title: 'Войти',
       form: {
-        username: 'Ваш ник',
+        username: 'Имя пользователя',
         password: 'Пароль',
         button: 'Войти',
       },
@@ -17,8 +17,8 @@ export default {
     yup: {
       required: 'Заполните поле',
       username: 'от 3 до 20 символов',
-      passwordMin: 'Минимально 6 символов',
-      confirmPassword: 'Пароли не совпадают',
+      passwordMin: 'Не менее 6 символов',
+      confirmPassword: 'Пароли должны совпадать',
       notOneOf: 'Такое имя уже занято',
     },
     errors: {

@@ -6,7 +6,7 @@ import { useFormik } from 'formik';
 import filter from 'leo-profanity';
 import { actions as messagesActions } from '../slices/messagesSlice.js';
 import useAuth from '../hooks/useAuth.jsx';
-import socket from '../socket.js';
+import useSocket from '../hooks/useSocket.jsx';
 
 const Message = () => {
   filter.loadDictionary('ru');
@@ -14,6 +14,7 @@ const Message = () => {
   const messageRef = useRef();
   const { user } = useAuth();
   const { currentChannel } = useSelector((state) => state.currentChannelReducer);
+  const socket = useSocket();
 
   const getCurrentChannelName = useSelector((state) => {
     const channelName = state.channelsReducer.channels

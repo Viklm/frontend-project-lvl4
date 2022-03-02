@@ -6,7 +6,6 @@ import {
   useLocation,
 } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/scss/main.scss';
 import LoginPage from './components/LoginPage.jsx';
 import ErorrPage from './components/ErorrPage.jsx';
 import ChatPage from './components/ChatPage.jsx';
