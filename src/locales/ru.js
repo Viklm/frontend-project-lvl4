@@ -57,6 +57,7 @@ export default {
     ChannelItem: {
       dropdownRemove: 'Удалить',
       dropdownRename: 'Переименовать',
+      dropdownName: 'Управление каналом',
     },
     ErrorPage: {
       title: 'Страница не найдена',
