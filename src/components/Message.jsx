@@ -1,34 +1,38 @@
 import React, { useRef, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Form, InputGroup } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import filter from 'leo-profanity';
-import { actions as messagesActions } from '../slices/messagesSlice.js';
+import { animateScroll as scroll } from 'react-scroll';
 import useAuth from '../hooks/useAuth.jsx';
 import useSocket from '../hooks/useSocket.jsx';
 
 const Message = () => {
-  filter.loadDictionary();
-  filter.add(filter.getDictionary('ru'));
   const { t } = useTranslation();
   const messageRef = useRef();
   const { user } = useAuth();
-  const { currentChannel } = useSelector((state) => state.currentChannelReducer);
+  const { currentChannel, channels } = useSelector((state) => state.channelsReducer);
   const socket = useSocket();
 
-  const getCurrentChannelName = useSelector((state) => {
-    const channelName = state.channelsReducer.channels
-      .find(({ id }) => id === currentChannel)?.name;
-    return channelName;
-  });
+  const getCurrentChannelName = channels.find(({ id }) => id === currentChannel)?.name;
 
   const messages = useSelector((state) => {
     const allMessages = state.messagesReducer.messages;
     const currentMessages = allMessages.filter(({ channelId }) => channelId === currentChannel);
     return currentMessages;
   });
-  const dispatch = useDispatch();
+
+  useEffect(() => {
+    messageRef.current.focus();
+  }, [currentChannel]);
+
+  useEffect(() => {
+    scroll.scrollToBottom({
+      duration: 0,
+      containerId: 'message-box',
+    });
+  }, [messages]);
 
   const formik = useFormik({
     initialValues: {
@@ -46,13 +50,6 @@ const Message = () => {
       });
     },
   });
-
-  useEffect(() => {
-    socket.on('newMessage', (message) => {
-      dispatch(messagesActions.addMessages(message));
-    });
-    return () => socket.removeAllListeners('newMessage');
-  }, []);
 
   return (
     <>

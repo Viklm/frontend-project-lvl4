@@ -5,10 +5,13 @@ import { Provider } from 'react-redux';
 import * as Rollbar from '@rollbar/react';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import filter from 'leo-profanity';
 import 'core-js/stable/index.js';
 import 'regenerator-runtime/runtime.js';
 import '../assets/application.scss';
 import 'react-toastify/scss/main.scss';
+import { actions as messagesActions } from './slices/messagesSlice.js';
+import { actions as channelsActions } from './slices/channelsSlice.js';
 import { AuthProvider } from './contexts/authContexts.jsx';
 import SocketContext from './contexts/socketContext.jsx';
 import App from './App.jsx';
@@ -20,7 +23,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const rollbarConfig = {
-  accessToken: 'da06b579b28144309b31221765a5502c',
+  accessToken: process.env.ROLLBAR,
   captureUncaught: true,
   captureUnhandledRejections: true,
   payload: {
@@ -38,6 +41,22 @@ export default async (socket) => {
         ru,
       },
     });
+
+  filter.loadDictionary();
+  filter.add(filter.getDictionary('ru'));
+
+  socket.on('newMessage', (message) => {
+    store.dispatch(messagesActions.addMessages(message));
+  });
+  socket.on('newChannel', (channel) => {
+    store.dispatch(channelsActions.addChannel(channel));
+  });
+  socket.on('removeChannel', ({ id }) => {
+    store.dispatch(channelsActions.removeChannel(id));
+  });
+  socket.on('renameChannel', ({ id, name }) => {
+    store.dispatch(channelsActions.renameChannel({ id, name }));
+  });
 
   return (
     <Rollbar.Provider config={rollbarConfig}>

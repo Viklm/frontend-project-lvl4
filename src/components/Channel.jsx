@@ -1,38 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Nav } from 'react-bootstrap';
 import { actions as modalSlice } from '../slices/modalSlice.js';
-import { actions as channelsActions } from '../slices/channelsSlice.js';
-import { actions as currentChannelActions } from '../slices/currentChannelSlice.js';
 import ChannelItem from './ChannelItem.jsx';
-import useSocket from '../hooks/useSocket.jsx';
 
 const Channel = () => {
   const { channels } = useSelector((state) => state.channelsReducer);
-  const { currentChannel } = useSelector((state) => state.currentChannelReducer);
-  const defaultChannel = channels.find(({ name }) => name === 'general')?.id;
   const dispatch = useDispatch();
-  const socket = useSocket();
-
-  useEffect(() => {
-    socket.on('newChannel', (channel) => {
-      dispatch(channelsActions.addChannel(channel));
-    });
-    socket.on('removeChannel', ({ id }) => {
-      dispatch(channelsActions.removeChannel(id));
-      if (id === currentChannel) {
-        dispatch(currentChannelActions.setCurrentChannel(defaultChannel));
-      }
-    });
-    socket.on('renameChannel', ({ id, name }) => {
-      dispatch(channelsActions.renameChannel({ id, name }));
-    });
-    return () => {
-      socket.removeAllListeners('newChannel');
-      socket.removeAllListeners('removeChannel');
-      socket.removeAllListeners('renameChannel');
-    };
-  }, [defaultChannel, currentChannel]);
 
   return (
     <>

@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { actions as modalSlice } from '../../slices/modalSlice.js';
-import { actions as currentChannelActions } from '../../slices/currentChannelSlice.js';
+import { actions as channelsActions } from '../../slices/channelsSlice.js';
 import useSocket from '../../hooks/useSocket.jsx';
 
 const NewChannel = () => {
@@ -37,7 +37,7 @@ const NewChannel = () => {
     onSubmit: (values) => {
       socket.emit('newChannel', values, (res) => {
         if (res.status === 'ok') {
-          dispatch(currentChannelActions.setCurrentChannel(res.data.id));
+          dispatch(channelsActions.setCurrentChannel(res.data.id));
           dispatch(modalSlice.setHiddenModal());
           notify();
         }

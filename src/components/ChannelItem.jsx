@@ -7,15 +7,15 @@ import {
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
-import { actions as currentChannelActions } from '../slices/currentChannelSlice.js';
+import { actions as channelsActions } from '../slices/channelsSlice.js';
 import { actions as modalSlice } from '../slices/modalSlice.js';
 
 const ChannelItem = ({ id, name, removable }) => {
   const { t } = useTranslation();
-  const { currentChannel } = useSelector((state) => state.currentChannelReducer);
+  const { currentChannel } = useSelector((state) => state.channelsReducer);
   const dispatch = useDispatch();
   const btnClasses = cn({
-    'w-100 rounded-0 text-start btn': true,
+    'w-100 rounded-0 text-start text-truncate btn': true,
     'btn-secondary': id === currentChannel,
   });
 
@@ -30,7 +30,7 @@ const ChannelItem = ({ id, name, removable }) => {
   if (!removable) {
     return (
       <Nav.Item as="li" className="w-100">
-        <button onClick={() => dispatch(currentChannelActions.setCurrentChannel(id))} type="button" className={btnClasses}>
+        <button onClick={() => dispatch(channelsActions.setCurrentChannel(id))} type="button" className={btnClasses}>
           <span className="me-1">#</span>
           {name}
         </button>
@@ -41,7 +41,7 @@ const ChannelItem = ({ id, name, removable }) => {
   return (
     <Nav.Item as="li" className="w-100">
       <Dropdown className="d-flex" as={ButtonGroup}>
-        <button onClick={() => dispatch(currentChannelActions.setCurrentChannel(id))} type="button" className={btnClasses}>
+        <button onClick={() => dispatch(channelsActions.setCurrentChannel(id))} type="button" className={btnClasses}>
           <span className="me-1">#</span>
           {name}
         </button>

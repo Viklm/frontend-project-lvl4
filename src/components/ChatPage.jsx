@@ -11,7 +11,6 @@ import {
 import { Link } from 'react-router-dom';
 import { actions as channelsActions } from '../slices/channelsSlice.js';
 import { actions as messagesActions } from '../slices/messagesSlice.js';
-import { actions as currentChannelActions } from '../slices/currentChannelSlice.js';
 
 import routes from '../routes.js';
 import Channel from './Channel.jsx';
@@ -49,7 +48,7 @@ const ChatPage = () => {
         batch(() => {
           dispatch(channelsActions.setChannels(data.channels));
           dispatch(messagesActions.setMessages(data.messages));
-          dispatch(currentChannelActions.setCurrentChannel(data.currentChannelId));
+          dispatch(channelsActions.setCurrentChannel(data.currentChannelId));
         });
       } catch (error) {
         console.error(error, '1');

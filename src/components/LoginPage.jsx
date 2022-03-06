@@ -56,10 +56,11 @@ const LoginForm = () => {
                   logIn(res.data);
                   navigate(from, { replace: true });
                 } catch (error) {
-                  if (error.isAxiosError || error.response.status === 401) {
-                    notify();
+                  if (error.response.status === 401) {
                     actions.setStatus({ authFailed: t('errors.authFailed') });
+                    return;
                   }
+                  notify();
                 }
               }}
             >
